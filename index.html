@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            background-color: lightblue
+        }
+
+        body {
+            width: 100%;
+            max-width: 640px;
+            position: relative;
+            margin: auto;
+            color: #3e3e3e;
+            font: 0.12rem/1.5 "Hiragino Sans GB", STFangsong, "Microsoft YaHei", Helvetica, STXihei, Arial, serif;
+            font-weight: normal;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-text-size-adjust: 100% !important;
+            background-image: url(./h5_bg.jpg);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+        }
+
+        .img-container {
+            position: absolute;
+            left: 0;
+            bottom: 12vh;
+            width: 100%;
+            font-size: 0;
+            text-align: center;
+        }
+
+        .img {
+            display: inline-block;
+            width: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="img-container">
+        <img class="img" src="./img11.png" alt="">
+        <img class="img" src="./img11.png" alt="">
+        <img class="img" style="margin-left: 20px;" src="./img22.png" alt="">
+        <img class="img" src="./img11.png" alt="">
+    </div>
+    <script src="./snow.js"></script>
+    <script src="https://howlerjs.com/assets/howler.js/src/howler.core.js"></script>
+    <script>
+        // var sound = new Howl({
+        //     src: ['https://howlerjs.com/assets/howler.js/tests/audio/sound2.webm'],
+        //     autoplay: false,
+        //     loop: true,
+        //     volume: 0.5,
+        //     ctx: true,
+        //     onload: function (a) {
+        //         console.log('onload', a)
+        //     },
+        //     onend: function () {
+        //         console.log('Finished!');
+        //     }
+        // })
+        // console.log('sound', sound, Howl)
+        window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
+        window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
+        try {
+            var audioCtx = new AudioContext();
+        } catch (e) {
+            alert('Your browser does not support AudioContext!');
+            console.log(e);
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://howlerjs.com/assets/howler.js/tests/audio/sound2.webm');
+        xhr.responseType = "arraybuffer";
+        xhr.onload = function () {
+            var audioData = xhr.response;
+            // Get an AudioBufferSourceNode.
+            // This is the AudioNode to use when we want to play an AudioBuffer
+            console.log('audioData', audioData)
+            var source = audioCtx.createBufferSource();
+        }
+
+    </script>
+</body>
+
+</html>
