@@ -49,7 +49,7 @@
         }
 
         snowImage = new Image();
-        snowImage.src = 'https://newimgcdn.lapetit.cn/h5/' + 'images/temporary/Christmas/snow.png';
+        snowImage.src = './snow.png';
 
         loop();
     }
