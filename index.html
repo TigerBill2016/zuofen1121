@@ -10,12 +10,11 @@
         html,
         body {
             height: 100%;
-            background-color: lightblue
+            background-color: #c7e4ea;
         }
 
         body {
             width: 100%;
-            max-width: 640px;
             position: relative;
             margin: auto;
             color: #3e3e3e;
@@ -26,17 +25,48 @@
             -webkit-font-smoothing: antialiased;
             -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
             -webkit-text-size-adjust: 100% !important;
+        }
+
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            opacity: 1;
+            transition: opacity 1s;
+            -moz-transition: opacity 1s;
+            /* Firefox 4 */
+            -webkit-transition: opacity 1s;
+            /* Safari 和 Chrome */
+            -o-transition: opacity 1s;
+        }
+
+        #root {
+            width: 100%;
+            height: 100%;
             background-image: url(./h5_bg.jpg);
             background-repeat: no-repeat;
             background-position: center center;
             background-size: cover;
+            opacity: 0;
+            transition: opacity 2s;
+            -moz-transition: opacity 2s;
+            /* Firefox 4 */
+            -webkit-transition: opacity 2s;
+            /* Safari 和 Chrome */
+            -o-transition: opacity 2s;
+            /* Opera */
         }
 
         .img-container {
             position: absolute;
-            left: 0;
-            bottom: 12vh;
             width: 100%;
+            left: 0;
+            bottom: 15%;
             font-size: 0;
             text-align: center;
         }
@@ -45,52 +75,75 @@
             display: inline-block;
             width: 20%;
         }
+
+        #canvas {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            z-index: 2;
+        }
     </style>
 </head>
 
 <body>
-    <div class="img-container">
-        <img class="img" src="./img11.png" alt="">
-        <img class="img" src="./img11.png" alt="">
-        <img class="img" style="margin-left: 20px;" src="./img22.png" alt="">
-        <img class="img" src="./img11.png" alt="">
+    <img src="./icon.jpg" style="position:absolute; top:0; left:0;  width: 80%; z-index:-1;opacity: 0; ">
+    <img id="loading" src="./icon.jpg" alt="">
+    <div id="root">
+        <div class="img-container">
+            <img class="img" src="./img11.png" alt="">
+            <img class="img" src="./img11.png" alt="">
+            <img class="img" style="margin-left: 20px;" src="./img22.png" alt="">
+            <img class="img" src="./img11.png" alt="">
+        </div>
+        <div id="canvas"></div>
     </div>
     <script src="./snow.js"></script>
     <script src="https://howlerjs.com/assets/howler.js/src/howler.core.js"></script>
+    <script src="./siriwave.js"></script>
     <script>
-        // var sound = new Howl({
-        //     src: ['https://howlerjs.com/assets/howler.js/tests/audio/sound2.webm'],
-        //     autoplay: false,
-        //     loop: true,
-        //     volume: 0.5,
-        //     ctx: true,
-        //     onload: function (a) {
-        //         console.log('onload', a)
-        //     },
-        //     onend: function () {
-        //         console.log('Finished!');
-        //     }
-        // })
-        // console.log('sound', sound, Howl)
-        window.AudioContext = window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.msAudioContext;
-        window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
-        try {
-            var audioCtx = new AudioContext();
-        } catch (e) {
-            alert('Your browser does not support AudioContext!');
-            console.log(e);
+        window.MUSIC_START = true
+        window.onload = function () {
+            console.log(Date.now())
+            document.getElementById('loading').style.opacity = 0
+            document.getElementById('root').style.opacity = 1
         }
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://howlerjs.com/assets/howler.js/tests/audio/sound2.webm');
-        xhr.responseType = "arraybuffer";
-        xhr.onload = function () {
-            var audioData = xhr.response;
-            // Get an AudioBufferSourceNode.
-            // This is the AudioNode to use when we want to play an AudioBuffer
-            console.log('audioData', audioData)
-            var source = audioCtx.createBufferSource();
+        var sound = new Howl({
+            src: ['https://m10.music.126.net/20181226214443/4bec77d41e83eca447a44a52ce018c2a/ymusic/5177/ed09/db07/eb281a14ab8fc3705bf31c7e8d5f8055.mp3'],
+            autoplay: true,
+            loop: true,
+            volume: 0.5,
+            ctx: true,
+            onload: function (a) {
+                console.log('onload', a)
+            },
+            onend: function () {
+                console.log('Finished!');
+            }
+        })
+        var container = document.getElementById('canvas')
+        var wave = new SiriWave({
+            container: container,
+            width: window.innerWidth,
+            height: window.innerHeight * 0.08,
+            cover: true,
+            speed: 0.03,
+            amplitude: 0.7,
+            frequency: 2
+        });
+        wave.start();
+        container.onclick = function () {
+            if (window.MUSIC_START === true) {
+                window.MUSIC_START = false
+                wave.stop()
+                sound.pause()
+            } else {
+                window.MUSIC_START = true
+                wave.start()
+                sound.play()
+            }
         }
+        console.log('sound', sound, Howl)
 
     </script>
 </body>
