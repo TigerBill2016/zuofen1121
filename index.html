@@ -116,6 +116,7 @@
             ctx: true,
             onload: function (a) {
                 console.log('onload', a)
+                wave.start();
             },
             onend: function () {
                 console.log('Finished!');
@@ -131,7 +132,6 @@
             amplitude: 0.7,
             frequency: 2
         });
-        wave.start();
         container.onclick = function () {
             if (window.MUSIC_START === true) {
                 window.MUSIC_START = false
